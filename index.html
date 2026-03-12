@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Task</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <header> <!--Aquí va el nombre de la web y sería fijo y visible siempre-->
+        <img id="logo" src="docs/recursos/LOGOok.png" alt="Logo Next Task">
+        <h1>Next Task</h1>
+        <p>Diseña y planifica tu vida</p>       
+    </header>
+    
+    <div class="contenedor">
+        <main> <!--Aquí va la lista de tareas con sus acciones-->
+            <h2>Lista de tareas</h2>
+            <div>
+                <form>
+                    <label for="inputTarea">Nueva tarea</label>
+                    <input type="text" id="inputTarea" placeholder="Nueva tarea...">
+                    <button type="submit">Añadir tarea</button>
+                </form>
+                <ul id="Listatareas">
+                </ul>
+            </div>
+        </main>
+    
+        <aside> <!--Aquí van las estadísticas-->
+            <h2>Estadísticas</h2>
+            <p>Completadas: <span id="tcompletas"></span></p>
+            <p>Por hacer: <span id="tporhacer"></span></p>
+            <p>TOTALES: <span id="ttotales"></span></p>
+        </aside>
+    </div>
+
+    <footer>
+        <p>Next Task — Gestiona tu día, una tarea a la vez.</p>
+        <p>Hecho por Marco Aurelio · 2026</p>
+    </footer>
+
+    <template id="plantillaTarea">
+        <li class="tarea">
+        <span class="texto-tarea"></span>
+        <button class="btn-eliminar">Eliminar</button>
+        </li>
+    </template>
+
+    <script src="app.js"></script>
+
+</body>
+</html>

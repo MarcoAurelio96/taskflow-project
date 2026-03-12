@@ -1,0 +1,151 @@
+:root {
+  --color-fondo: #ffffff;
+  --color-principal: #0f2b52;
+  --color-acento: #4995ff;
+  --color-completada: #3d9970;
+  --color-borde: #4995ff;
+  --color-card: #0f2b52;
+  --fuente-principal: Arial, sans-serif;
+  --espaciado: 16px;
+  --radio-borde: 8px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--fuente-principal);
+  background: var(--color-fondo);
+  color: var(--color-principal);
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header y sus elementos */
+header {
+  background: var(--color-fondo);
+  color: var(--color-principal);
+  padding: var(--espaciado);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 3px solid var(--color-acento);
+}
+
+header h1 {
+  font-size: 1.5rem;
+  margin-top: 8px;
+}
+
+header p {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+#logo {
+  width: 320px;
+}
+
+/* he metido main y aside dentro de un div */
+
+.contenedor {
+  display: flex;
+  flex: 1;
+}
+
+main {
+  flex: 1;
+  padding: var(--espaciado);
+}
+
+aside {
+  width: 280px;
+  padding: var(--espaciado);
+  background: var(--color-principal);
+  border-left: 2px solid var(--color-borde);
+  color: white;
+}
+
+aside h2 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: white;
+}
+
+aside p {
+  color: white;
+  margin-bottom: 8px;
+}
+
+
+#Listatareas {
+  list-style: none;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+#Listatareas li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--color-card);
+  color: white;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Botón añadir tarea */
+form button {
+  cursor: pointer;
+  background: var(--color-acento);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radio-borde);
+  font-size: 1rem;
+}
+
+form button:hover {
+  background: var(--color-principal);
+}
+
+/* Input */
+input[type="text"] {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 2px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  outline: none;
+}
+
+input[type="text"]:focus {
+  border-color: var(--color-principal);
+}
+
+/* Botón eliminar */
+#Listatareas li button {
+  background: transparent;
+  color: var(--color-acento);
+  border: 1px solid var(--color-acento);
+  padding: 4px 10px;
+  border-radius: var(--radio-borde);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+#Listatareas li button:hover {
+  background: var(--color-acento);
+  color: white;
+}
