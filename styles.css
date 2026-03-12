@@ -65,6 +65,33 @@ main {
   padding: var(--espaciado);
 }
 
+#filtros {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  margin-top: 16px;
+}
+
+.filtro {
+  background: transparent;
+  border: 1px solid var(--color-borde);
+  color: var(--color-principal);
+  padding: 6px 14px;
+  border-radius: var(--radio-borde);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.filtro:hover {
+  background: var(--color-acento);
+  color: white;
+}
+
+.filtro.activo {
+  background: var(--color-principal);
+  color: white;
+}
+
 aside {
   width: 480px;
   padding: var(--espaciado);
