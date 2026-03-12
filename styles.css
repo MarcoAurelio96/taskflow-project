@@ -66,9 +66,9 @@ main {
 }
 
 aside {
-  width: 280px;
+  width: 480px;
   padding: var(--espaciado);
-  background: var(--color-principal);
+  background: var(--color-acento);
   border-left: 2px solid var(--color-borde);
   color: white;
 }
@@ -148,4 +148,39 @@ input[type="text"]:focus {
 #Listatareas li button:hover {
   background: var(--color-acento);
   color: white;
+}
+
+footer {
+  background: var(--color-principal);
+  color: white;
+  text-align: center;
+  padding: var(--espaciado);
+  font-size: 0.85rem;
+}
+
+
+/* para móviles */
+
+@media (max-width: 768px) {
+  .contenedor {
+    flex-direction: column;
+  }
+
+  aside {
+    width: 100%;
+    border-left: none;
+    border-top: 2px solid var(--color-borde);
+  }
+
+  /* Añade esto */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  form input,
+  form button {
+    width: 100%;
+  }
 }
