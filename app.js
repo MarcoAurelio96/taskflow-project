@@ -1,4 +1,17 @@
-let tareas =[];
+let tareas = [];
+
+let filtroActivo = 'todas';
+
+const form = document.querySelector('form');
+const input = document.getElementById('inputTarea');
+const lista = document.getElementById('listaTareas');
+
+const tareasGuardadas = localStorage.getItem('tareas');
+if (tareasGuardadas) {
+  tareas = JSON.parse(tareasGuardadas);
+}
+
+renderizarTareas();
 
 function crearTarea (titulo) {
   return {
@@ -8,10 +21,6 @@ function crearTarea (titulo) {
     createAt: new Date().toLocaleDateString('es-ES')
   };
 }
-
-const form = document.querySelector('form');
-const input = document.getElementById('inputTarea');
-const lista = document.getElementById('listaTareas');
 
 form.addEventListener('submit', function(e){
   e.preventDefault();
@@ -64,6 +73,7 @@ function renderizarTareas(){
   });
 
   actualizarEstadisticas();
+  guardarTareas();
 }
 
 function actualizarEstadisticas(){
@@ -77,7 +87,6 @@ function actualizarEstadisticas(){
 }
 
 const filtros = document.querySelectorAll('.filtro');
-let filtroActivo = 'todas';
 
 filtros.forEach(function(boton) {
   boton.addEventListener('click', function() {
@@ -87,3 +96,7 @@ filtros.forEach(function(boton) {
     renderizarTareas();
   });
 });
+
+function guardarTareas(){
+  localStorage.setItem('tareas',JSON.stringify(tareas));
+}
