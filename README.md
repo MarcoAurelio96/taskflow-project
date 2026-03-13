@@ -6,13 +6,13 @@ Es una aplicación para crear, completar, eliminar y filtrar tareas del día a d
 
 La interfaz está dividida en cuatro secciones principales:
 
-- **Cabecera**: Muestra el nombre de la app. Es fija y siempre visible.
+Cabecera: Muestra el nombre de la app. Es fija y siempre visible.
 
-- **Formulario**: Un campo de texto para escribir nuevas tareas con un botón para añadirlas. También incluye filtros para ver todas las tareas.
+Formulario: Un campo de texto para escribir nuevas tareas con un botón para añadirlas. También incluye filtros para ver todas las tareas.
 
-- **Lista de tareas**: Muestra las tareas con un círculo para marcarlas como completadas y una papelera para eliminarlas. Las tareas completadas aparecen con texto tachado.
+Lista de tareas: Muestra las tareas con un círculo para marcarlas como completadas y una papelera para eliminarlas. Las tareas completadas aparecen con texto tachado.
 
-- **Panel de estadísticas**: Muestra el total de tareas, cuántas están completadas, cuántas pendientes y una barra de progreso visual. Se actualiza en tiempo real.
+Panel de estadísticas: Muestra el total de tareas, cuántas están completadas, cuántas pendientes y una barra de progreso visual. Se actualiza en tiempo real.
 
 ### Acciones disponibles
 
@@ -26,8 +26,8 @@ Filtrar tareas - Usa los chips: Todas / Pendientes / Completadas
 
 ### Responsive
 
-- **Escritorio**: Layout separado en 2 listas — lista de tareas a la izquierda, estadísticas a la derecha.
-- **Móvil**: Layout — estadísticas arriba, lista abajo.
+Escritorio: Layout separado en 2 listas — lista de tareas a la izquierda, estadísticas a la derecha.
+Móvil: Layout — estadísticas arriba, lista abajo.
 
 ### Persistencia
 
