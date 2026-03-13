@@ -5,6 +5,7 @@
   --color-completada: #3d9970;
   --color-borde: #4995ff;
   --color-card: #0f2b52;
+  --color-borrar: #ff2f2f;
   --fuente-principal: Arial, sans-serif;
   --espaciado: 16px;
   --radio-borde: 8px;
@@ -112,7 +113,7 @@ aside p {
 }
 
 
-#Listatareas {
+#listaTareas {
   list-style: none;
   margin-top: 16px;
   display: flex;
@@ -121,7 +122,7 @@ aside p {
 }
 
 
-#Listatareas li {
+#listaTareas li {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -162,8 +163,8 @@ input[type="text"]:focus {
 }
 
 /* Botón eliminar */
-#Listatareas li button {
-  background: transparent;
+#listaTareas li button {
+  background: white;
   color: var(--color-acento);
   border: 1px solid var(--color-acento);
   padding: 4px 10px;
@@ -172,8 +173,8 @@ input[type="text"]:focus {
   font-size: 0.85rem;
 }
 
-#Listatareas li button:hover {
-  background: var(--color-acento);
+#listaTareas li button:hover {
+  background: var(--color-borrar);
   color: white;
 }
 
@@ -183,6 +184,11 @@ footer {
   text-align: center;
   padding: var(--espaciado);
   font-size: 0.85rem;
+}
+
+.completada {
+    text-decoration: line-through;
+    opacity: 0.5;
 }
 
 
@@ -210,4 +216,5 @@ footer {
   form button {
     width: 100%;
   }
+
 }
