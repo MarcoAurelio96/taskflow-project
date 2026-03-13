@@ -17,8 +17,11 @@ La interfaz está dividida en cuatro secciones principales:
 ### Acciones disponibles
 
 Añadir tarea - Escribe en el input y pulsa Enter o el botón
+
 Completar tarea - Haz clic en el círculo de la tarea
+
 Eliminar tarea - Pulsa la papelera junto a la tarea
+
 Filtrar tareas - Usa los chips: Todas / Pendientes / Completadas
 
 ### Responsive
