@@ -195,6 +195,47 @@ footer {
     opacity: 0.5;
 }
 
+#btnModoOscuro {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  z-index: 999;
+  transition: opacity 0.2s ease;
+}
+
+#btnModoOscuro:hover {
+  opacity: 0.6;
+}
+
+#btnMarcarTodas, #btnBorrarCompletadas {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radio-borde);
+  border: none;
+  background: transparent;
+  font-size: 0.8rem;
+  color: var(--color-principal);
+  transition: opacity 0.2s ease;
+}
+
+#btnMarcarTodas:hover, #btnBorrarCompletadas:hover {
+  opacity: 0.6;
+}
+
+.dark #btnMarcarTodas, 
+.dark #btnBorrarCompletadas {
+  color: white;
+}
+
+.dark #btnModoOscuro {
+  color: white;
+}
 
 /* para móviles */
 

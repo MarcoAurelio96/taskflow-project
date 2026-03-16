@@ -8,6 +8,8 @@ const lista = document.getElementById('listaTareas');
 const buscador = document.getElementById('buscador');
 const btnModoOscuro = document.getElementById('btnModoOscuro');
 const logo = document.getElementById('logo');
+const btnMarcarTodas = document.getElementById('btnMarcarTodas');
+const btnBorrarCompletadas = document.getElementById('btnBorrarCompletadas');
 
 buscador.addEventListener('input',function() {
   renderizarTareas();
@@ -151,6 +153,16 @@ btnModoOscuro.addEventListener('click', function() {
   document.documentElement.classList.toggle('dark');
   const esModoOscuro = document.documentElement.classList.contains('dark');
   localStorage.setItem('modoOscuro', esModoOscuro);
-  btnModoOscuro.textContent = esModoOscuro ? 'Modo claro' : 'Modo oscuro';
+  btnModoOscuro.textContent = esModoOscuro ? '☀️ Modo claro' : '🌙 Modo oscuro';
   logo.src = esModoOscuro ? 'docs/recursos/LOGOokB.png' : 'docs/recursos/LOGOok.png';
+});
+
+btnMarcarTodas.addEventListener('click', function() {
+  tareas.forEach(function(t) { t.completed = true; });
+  renderizarTareas();
+});
+
+btnBorrarCompletadas.addEventListener('click', function() {
+  tareas = tareas.filter(function(t) { return !t.completed; });
+  renderizarTareas();
 });
