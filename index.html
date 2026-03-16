@@ -8,15 +8,15 @@
 </head>
 <body class="bg-white dark:bg-gray-900 dark:text-white">
     
-    <header class="flex flex-col items-center text-center p-4 border-b-4 border-blue-400"> <!--Aquí va el nombre de la web y sería fijo y visible siempre-->
+    <header class="flex flex-col items-center text-center p-4 relative z-10"> <!--Aquí va el nombre de la web y sería fijo y visible siempre-->
         <img id="logo" src="docs/recursos/LOGOok.png" alt="Logo Next Task">
         <h1>Next Task</h1>
         <p>Diseña y planifica tu vida</p>
         <button id="btnModoOscuro">🌙 Modo oscuro</button>       
     </header>
     
-    <div class="contenedor">
-        <main> <!--Aquí va la lista de tareas con sus acciones-->
+    <div class="contenedor p-4 gap-4">
+        <main class="bg-gray-200 dark:bg-gray-800 rounded-xl shadow-lg p-4"> <!--Aquí va la lista de tareas con sus acciones-->
             <h2>Lista de tareas</h2>
             <div>
                 <form>
@@ -41,11 +41,37 @@
             </div>
         </main>
     
-        <aside> <!--Aquí van las estadísticas-->
+        <aside class="bg-blue-400 rounded-xl shadow-lg p-4"> <!--Aquí van las estadísticas-->
             <h2>Estadísticas</h2>
-            <p>Completadas: <span id="tcompletas"></span></p>
-            <p>Por hacer: <span id="tporhacer"></span></p>
-            <p>TOTALES: <span id="ttotales"></span></p>
+
+            <div class="stat">
+                <div class="stat-label">Completadas</div>
+                <div class="stat-number" id="tcompletas">0</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">Por hacer</div>
+                <div class="stat-number" id="tporhacer">0</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">Totales</div>
+                <div class="stat-number" id="ttotales">0</div>
+            </div>
+
+            <div class="progreso-container">
+
+                <div class="progreso-label">
+                    <span>Progreso</span>
+                    <span id="tporcentaje">0%</span>
+                </div>
+
+                <div class="progreso-barra">
+                    <div class="progreso-relleno" id="progresoBarra"></div>
+                </div>
+
+            </div>
+
         </aside>
     </div>
 

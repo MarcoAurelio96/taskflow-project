@@ -47,6 +47,8 @@ header p {
 .contenedor {
   display: flex;
   flex: 1;
+  gap: 16px;
+  padding: 16px;
 }
 
 main {
@@ -87,6 +89,9 @@ aside {
   background: var(--color-acento);
   border-left: 2px solid var(--color-borde);
   color: white;
+  box-shadow: -4px 0 12px rgba(0,0,0,0.15);
+  position: relative;
+  z-index: 5;
 }
 
 aside h2 {
@@ -98,6 +103,50 @@ aside h2 {
 aside p {
   color: white;
   margin-bottom: 8px;
+}
+
+/* stats */
+.stat {
+  margin-bottom: 16px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.stat-numero {
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.progreso-container {
+  margin-top: 16px;
+}
+
+.progreso-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.progreso-barra {
+  height: 8px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progreso-relleno {
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+  width: 0%;
 }
 
 
@@ -182,6 +231,7 @@ input[type="text"]:focus {
   color: white;
 }
 
+
 footer {
   background: var(--color-principal);
   color: white;
@@ -235,6 +285,47 @@ footer {
 
 .dark #btnModoOscuro {
   color: white;
+}
+
+.dark .filtro {
+  color: white;
+  border-color: white;
+}
+
+.dark .filtro.activo {
+  background: white;
+  color: var(--color-principal);
+}
+/* animaciones */
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#listaTareas li {
+  animation: aparecer 0.3s ease;
+}
+
+@keyframes desaparecer {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
+
+.eliminando {
+  animation: desaparecer 0.3s ease forwards !important;
 }
 
 /* para móviles */

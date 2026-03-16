@@ -41,6 +41,17 @@ form.addEventListener('submit', function(e){
   tareas.push(tarea);
   renderizarTareas();
 
+  const liNuevo = lista.lastElementChild;
+    if (liNuevo) {
+      liNuevo.style.opacity = '0';
+      liNuevo.style.transform = 'translateY(-10px)';
+      liNuevo.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      setTimeout(function() {
+        liNuevo.style.opacity = '1';
+        liNuevo.style.transform = 'translateY(0)';
+      }, 10);
+    }
+
   input.value = '';
 });
 
@@ -67,9 +78,15 @@ tareasFiltradas.forEach(function(tarea) {
       li.classList.add('completada');
     }
 
-    li.addEventListener('click', function(){
+   li.addEventListener('click', function(){
       tarea.completed = !tarea.completed;
-      renderizarTareas();
+      if (tarea.completed) {
+       li.classList.add('completada');
+      } else {
+        li.classList.remove('completada');
+      }
+    actualizarEstadisticas();
+    guardarTareas();
     });
 
     const botonEditar = document.createElement('button');
@@ -107,10 +124,13 @@ tareasFiltradas.forEach(function(tarea) {
     botonEliminar.innerHTML = '<img src="docs/recursos/papelel.png" alt="Eliminar" width="20">';
     botonEliminar.addEventListener('click', function(e){
       e.stopPropagation();
-      tareas = tareas.filter(function(t){
-        return t.id !== tarea.id;
-      });
+      li.classList.add('eliminando');
+      setTimeout(function() {
+        tareas = tareas.filter(function(t){
+          return t.id !== tarea.id;
+        });
       renderizarTareas();
+      }, 300); // espera 0.3s a que termine la animación
     });
 
     li.appendChild(spanTexto);
@@ -127,10 +147,13 @@ function actualizarEstadisticas(){
   const total = tareas.length;
   const completadas = tareas.filter(function(t) { return t.completed; }).length;
   const pendientes = total - completadas;
+  const porcentaje = total === 0 ? 0 : Math.round((completadas / total) * 100);
 
   document.getElementById('ttotales').textContent = total;
   document.getElementById('tcompletas').textContent = completadas;
   document.getElementById('tporhacer').textContent = pendientes;
+  document.getElementById('tporcentaje').textContent = porcentaje + '%';
+  document.getElementById('progresoBarra').style.width = porcentaje + '%';
 }
 
 const filtros = document.querySelectorAll('.filtro');
