@@ -54,9 +54,12 @@ function renderizarTareas(){
   return coincideTexto;
   });
 
-  tareasFiltradas.forEach(function(tarea) {
+tareasFiltradas.forEach(function(tarea) {
     const li = document.createElement('li');
-    li.textContent = tarea.title;
+
+    const spanTexto = document.createElement('span');
+    spanTexto.textContent = tarea.title;
+    spanTexto.style.flex = '1';
 
     if (tarea.completed) {
       li.classList.add('completada');
@@ -67,9 +70,40 @@ function renderizarTareas(){
       renderizarTareas();
     });
 
+    const botonEditar = document.createElement('button');
+    botonEditar.innerHTML = '<img src="docs/recursos/lapiz.png" alt="Editar" width="20">';
+    botonEditar.addEventListener('click', function(e) {
+      e.stopPropagation();
+
+      const inputEditar = document.createElement('input');
+      inputEditar.type = 'text';
+      inputEditar.value = tarea.title;
+
+      li.textContent = '';
+      li.appendChild(inputEditar);
+      li.appendChild(botonEditar);
+      li.appendChild(botonEliminar);
+
+      inputEditar.focus();
+
+      inputEditar.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && inputEditar.value.trim() !== '') {
+          tarea.title = inputEditar.value.trim();
+          renderizarTareas();
+        }
+      });
+
+      inputEditar.addEventListener('blur', function() {
+        if (inputEditar.value.trim() !== '') {
+          tarea.title = inputEditar.value.trim();
+          renderizarTareas();
+        }
+      });
+    });
+
     const botonEliminar = document.createElement('button');
     botonEliminar.innerHTML = '<img src="docs/recursos/papelel.png" alt="Eliminar" width="20">';
-    botonEliminar.addEventListener ('click', function(e){
+    botonEliminar.addEventListener('click', function(e){
       e.stopPropagation();
       tareas = tareas.filter(function(t){
         return t.id !== tarea.id;
@@ -77,8 +111,9 @@ function renderizarTareas(){
       renderizarTareas();
     });
 
+    li.appendChild(spanTexto);
+    li.appendChild(botonEditar);
     li.appendChild(botonEliminar);
-
     lista.appendChild(li);
   });
 
