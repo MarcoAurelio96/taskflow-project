@@ -7,6 +7,7 @@ const input = document.getElementById('inputTarea');
 const lista = document.getElementById('listaTareas');
 const buscador = document.getElementById('buscador');
 const btnModoOscuro = document.getElementById('btnModoOscuro');
+const logo = document.getElementById('logo');
 
 buscador.addEventListener('input',function() {
   renderizarTareas();
@@ -110,9 +111,11 @@ function guardarTareas(){
   localStorage.setItem('tareas',JSON.stringify(tareas));
   }
 
+
 btnModoOscuro.addEventListener('click', function() {
   document.documentElement.classList.toggle('dark');
   const esModoOscuro = document.documentElement.classList.contains('dark');
   localStorage.setItem('modoOscuro', esModoOscuro);
   btnModoOscuro.textContent = esModoOscuro ? 'Modo claro' : 'Modo oscuro';
-  });
+  logo.src = esModoOscuro ? 'docs/recursos/LOGOokB.png' : 'docs/recursos/LOGOok.png';
+});
