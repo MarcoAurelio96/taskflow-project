@@ -6,12 +6,13 @@
     <title>Next Task</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="bg-white dark:bg-gray-900 dark:text-white">
     
-    <header> <!--Aquí va el nombre de la web y sería fijo y visible siempre-->
+    <header class="flex flex-col items-center text-center p-4 border-b-4 border-blue-400"> <!--Aquí va el nombre de la web y sería fijo y visible siempre-->
         <img id="logo" src="docs/recursos/LOGOok.png" alt="Logo Next Task">
         <h1>Next Task</h1>
-        <p>Diseña y planifica tu vida</p>       
+        <p>Diseña y planifica tu vida</p>
+        <button id="btnModoOscuro">Modo oscuro</button>       
     </header>
     
     <div class="contenedor">
@@ -23,6 +24,9 @@
                     <input type="text" id="inputTarea" placeholder="Nueva tarea...">
                     <button type="submit">Añadir tarea</button>
                 </form>
+
+                <input type="text" id="buscador" placeholder="Buscar tarea...">
+
                 <div id="filtros">
                     <button class="filtro activo" data-filtro="todas">Todas</button>
                     <button class="filtro" data-filtro="pendientes">Pendientes</button>
@@ -54,6 +58,12 @@
     </template>
 
     <script src="app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+        darkMode: 'class'
+        }
+    </script>
 
 </body>
 </html>

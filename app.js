@@ -5,6 +5,12 @@ let filtroActivo = 'todas';
 const form = document.querySelector('form');
 const input = document.getElementById('inputTarea');
 const lista = document.getElementById('listaTareas');
+const buscador = document.getElementById('buscador');
+const btnModoOscuro = document.getElementById('btnModoOscuro');
+
+buscador.addEventListener('input',function() {
+  renderizarTareas();
+});
 
 const tareasGuardadas = localStorage.getItem('tareas');
 if (tareasGuardadas) {
@@ -38,10 +44,13 @@ form.addEventListener('submit', function(e){
 function renderizarTareas(){
   lista.innerHTML = '';
 
+  const textoBusqueda = buscador.value.toLowerCase();
+
   let tareasFiltradas = tareas.filter(function(t) {
-    if (filtroActivo === 'completadas') return t.completed;
-    if (filtroActivo === 'pendientes') return !t.completed;
-    return true;
+  const coincideTexto = t.title.toLowerCase().includes(textoBusqueda);
+  if (filtroActivo === 'completadas') return t.completed && coincideTexto;
+  if (filtroActivo === 'pendientes') return !t.completed && coincideTexto;
+  return coincideTexto;
   });
 
   tareasFiltradas.forEach(function(tarea) {
@@ -99,4 +108,11 @@ filtros.forEach(function(boton) {
 
 function guardarTareas(){
   localStorage.setItem('tareas',JSON.stringify(tareas));
-}
+  }
+
+btnModoOscuro.addEventListener('click', function() {
+  document.documentElement.classList.toggle('dark');
+  const esModoOscuro = document.documentElement.classList.contains('dark');
+  localStorage.setItem('modoOscuro', esModoOscuro);
+  btnModoOscuro.textContent = esModoOscuro ? 'Modo claro' : 'Modo oscuro';
+  });

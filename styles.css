@@ -27,18 +27,6 @@ body {
   min-height: 100vh;
 }
 
-/* Header y sus elementos */
-header {
-  background: var(--color-fondo);
-  color: var(--color-principal);
-  padding: var(--espaciado);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  border-bottom: 3px solid var(--color-acento);
-}
-
 header h1 {
   font-size: 1.5rem;
   margin-top: 8px;
@@ -160,6 +148,12 @@ input[type="text"] {
 
 input[type="text"]:focus {
   border-color: var(--color-principal);
+}
+
+#buscador {
+  width: 100%;
+  margin-bottom: 12px;
+  margin-top: 12px;
 }
 
 /* Botón eliminar */
