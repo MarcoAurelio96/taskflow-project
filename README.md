@@ -48,3 +48,8 @@ Las estadísticas se actualizan correctamente al marcar y eliminar tareas.
 Los datos persisten al recargar la página.
 
 Con títulos muy largos los iconos pueden desaparecer.
+
+## Demo
+
+La aplicación está desplegada en Vercel:
+https://taskflow-project-42pz.vercel.app/

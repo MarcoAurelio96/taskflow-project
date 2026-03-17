@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next Task</title>
     <link rel="stylesheet" href="styles.css">
+
+    <script>
+        // Aplica el modo oscuro lo antes posible (evita "flash" al cargar)
+        try {
+            const esModoOscuro = localStorage.getItem('modoOscuro') === 'true';
+            if (esModoOscuro) document.documentElement.classList.add('dark');
+        } catch {}
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Config para Tailwind via CDN (modo oscuro manual por clase)
+        tailwind.config = { darkMode: 'class' };
+    </script>
 </head>
 <body class="bg-white dark:bg-gray-900 dark:text-white">
     
@@ -88,12 +101,6 @@
     </template>
 
     <script src="app.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-        darkMode: 'class'
-        }
-    </script>
 
 </body>
 </html>
