@@ -34,3 +34,17 @@ Móvil: Layout — estadísticas arriba, lista abajo.
 Los datos se guardan en `localStorage` para que las tareas no se pierdan al cerrar el navegador.
 
 El diseño está en `docs/design/design.png`.
+
+## Testing manual
+
+La aplicación se probó manualmente con los siguientes casos:
+
+La lista vacía se muestra correctamente.
+
+No es posible añadir tareas sin título.
+
+Las estadísticas se actualizan correctamente al marcar y eliminar tareas.
+
+Los datos persisten al recargar la página.
+
+Con títulos muy largos los iconos pueden desaparecer.

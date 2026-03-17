@@ -91,6 +91,7 @@ tareasFiltradas.forEach(function(tarea) {
 
     const botonEditar = document.createElement('button');
     botonEditar.innerHTML = '<img src="docs/recursos/lapiz.png" alt="Editar" width="20">';
+    botonEditar.setAttribute('aria-label', 'Editar tarea');
     botonEditar.addEventListener('click', function(e) {
       e.stopPropagation();
 
@@ -122,6 +123,7 @@ tareasFiltradas.forEach(function(tarea) {
 
     const botonEliminar = document.createElement('button');
     botonEliminar.innerHTML = '<img src="docs/recursos/papelel.png" alt="Eliminar" width="20">';
+    botonEliminar.setAttribute('aria-label', 'Eliminar tarea');
     botonEliminar.addEventListener('click', function(e){
       e.stopPropagation();
       li.classList.add('eliminando');
