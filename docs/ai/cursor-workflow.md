@@ -57,3 +57,49 @@ function actualizarEstadisticas() {
   }
 }
 
+Instalé el servidor MCP filesystem conectado a mi proyecto bootcamp-project.
+
+Realicé estas 5 consultas:
+1ª ¿Qué archivos hay en mi proyecto?
+  index.html
+  styles.css
+  app.js
+  README.md
+  .gitignore
+  docs/ai/ai-comparison.md
+  docs/ai/cursor-workflow.md
+
+2ª Lee el contenido de mi app.js
+  Aquí tienes el contenido completo de tu app.js:
+    let tareas = [];
+    let filtroActivo = 'todas';
+    (...)
+    btnBorrarCompletadas.addEventListener('click', function() {
+    tareas = tareas.filter(function(t) { return !t.completed; });
+    renderizarTareas();
+    });
+
+3ª ¿Cuántas líneas tiene mi index.html?
+  Tu index.html tiene 106 líneas.
+
+4ª Busca en mi proyecto dónde uso localStorage
+  Voy a buscar en todo el proyecto todas las apariciones de localStorage y te digo en qué archivos y líneas se usa.
+
+  Dónde usas localStorage en tu proyecto
+  index.html
+
+  Línea 12: localStorage.getItem('modoOscuro')
+  app.js
+
+  Línea 25: localStorage.getItem(STORAGE_KEY_TAREAS) (cargar tareas)
+  Línea 59: localStorage.setItem(STORAGE_KEY_TAREAS, ...) (guardar tareas)
+  Línea 75: localStorage.setItem('modoOscuro', ...) (guardar modo)
+  Línea 85: localStorage.getItem('modoOscuro') (leer modo)
+
+5ª ¿Qué hay dentro de la carpeta docs?
+  Tienes estos archivos:
+    docs/ai/ai-comparison.md
+    docs/ai/cursor-workflow.md
+    docs/ai/experiments.md
+    docs/ai/prompt-engineering.md
+    docs/ai/reflection.md
