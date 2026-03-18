@@ -17,6 +17,10 @@ buscador.addEventListener('input',function() {
   renderizarTareas();
 });
 
+/**
+ * Carga las tareas guardadas en localStorage.
+ * @returns {Array} Lista de tareas válidas.
+ */
 function cargarTareas() {
   const raw = localStorage.getItem(STORAGE_KEY_TAREAS);
   if (!raw) return [];
@@ -47,6 +51,9 @@ function cargarTareas() {
   }
 }
 
+/**
+ * Guarda el array de tareas en localStorage.
+ */
 function guardarTareas() {
   try {
     localStorage.setItem(STORAGE_KEY_TAREAS, JSON.stringify(tareas));
@@ -57,6 +64,10 @@ function guardarTareas() {
 
 tareas = cargarTareas();
 
+/**
+ * Activa o desactiva el modo oscuro.
+ * @param {boolean} esModoOscuro - true para modo oscuro, false para modo claro.
+ */
 function setModoOscuro(esModoOscuro) {
   document.documentElement.classList.toggle('dark', esModoOscuro);
 
@@ -79,7 +90,11 @@ function aplicarModoOscuroDesdeStorage() {
 aplicarModoOscuroDesdeStorage();
 
 renderizarTareas();
-/* Funciones para crear tareas, actualizar estadisticas y guardar tareas*/
+/**
+ * Crea un objeto tarea nuevo.
+ * @param {string} titulo - El título de la tarea.
+ * @returns {Object} Objeto tarea con id, title, completed y createdAt.
+ */
 function crearTarea(titulo) {
   // Genera un ID único incluso si se borran tareas anteriores
   let nuevoId = 1;
@@ -119,6 +134,9 @@ form.addEventListener('submit', function(e){
   input.value = '';
 });
 
+/**
+ * Renderiza las tareas filtradas en el DOM.
+ */
 function renderizarTareas(){
   lista.innerHTML = '';
 
@@ -215,6 +233,9 @@ tareasFiltradas.forEach(function(tarea) {
   guardarTareas();
 }
 
+/**
+ * Actualiza las estadísticas del aside en tiempo real.
+ */
 function actualizarEstadisticas() {
   const total = tareas.length;
   const completadas = tareas.reduce((acc, t) => acc + (t.completed ? 1 : 0), 0);
