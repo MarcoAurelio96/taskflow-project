@@ -56,3 +56,4 @@ function actualizarEstadisticas() {
     barra.setAttribute('aria-valuenow', porcentaje);
   }
 }
+

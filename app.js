@@ -125,10 +125,17 @@ form.addEventListener('submit', function(e){
       liNuevo.style.opacity = '0';
       liNuevo.style.transform = 'translateY(-10px)';
       liNuevo.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-      setTimeout(function() {
+      requestAnimationFrame(function() {
         liNuevo.style.opacity = '1';
         liNuevo.style.transform = 'translateY(0)';
-      }, 10);
+      });
+
+      // Limpia estilos inline al terminar, para no romper el :hover (transform).
+      setTimeout(function() {
+        liNuevo.style.opacity = '';
+        liNuevo.style.transform = '';
+        liNuevo.style.transition = '';
+      }, 350);
     }
 
   input.value = '';
