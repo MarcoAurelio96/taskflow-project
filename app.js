@@ -13,6 +13,7 @@ const logo = document.getElementById('logo');
 const btnMarcarTodas = document.getElementById('btnMarcarTodas');
 const btnBorrarCompletadas = document.getElementById('btnBorrarCompletadas');
 const contadorCaracteres = document.getElementById('contadorCaracteres');
+const selectPrioridad = document.getElementById('prioridadTarea');
 
 buscador.addEventListener('input',function() {
   renderizarTareas();
@@ -40,6 +41,10 @@ function cargarTareas() {
         const id = Number.isFinite(Number(t.id)) ? Number(t.id) : idx + 1;
         const title = typeof t.title === 'string' ? t.title : '';
         const completed = Boolean(t.completed);
+        const priority =
+          t.priority === 'urgente' || t.priority === 'importante' || t.priority === 'normal'
+            ? t.priority
+            : 'normal';
         const createdAt =
           typeof t.createdAt === 'string'
             ? t.createdAt
@@ -48,7 +53,7 @@ function cargarTareas() {
               : new Date().toLocaleDateString('es-ES');
 
         if (!title.trim()) return null;
-        return { id, title: title.trim(), completed, createdAt };
+        return { id, title: title.trim(), completed, createdAt, priority };
       })
       .filter(Boolean);
   } catch {
@@ -100,7 +105,7 @@ renderizarTareas();
  * @param {string} titulo - El título de la tarea.
  * @returns {Object} Objeto tarea con id, title, completed y createdAt.
  */
-function crearTarea(titulo) {
+function crearTarea(titulo, priority) {
   // Genera un ID único incluso si se borran tareas anteriores
   let nuevoId = 1;
   if (tareas.length > 0) {
@@ -111,7 +116,8 @@ function crearTarea(titulo) {
     id: nuevoId,
     title: titulo,
     completed: false,
-    createdAt: new Date().toLocaleDateString('es-ES') // corregido typo: createAt -> createdAt
+    createdAt: new Date().toLocaleDateString('es-ES'), // corregido typo: createAt -> createdAt
+    priority: priority || 'normal'
   };
 }
 
@@ -121,7 +127,8 @@ form.addEventListener('submit', function(e){
   const titulo = input.value.trim();
   if (titulo === ('')) return;
 
-  const tarea = crearTarea(titulo);
+  const prioridad = selectPrioridad ? selectPrioridad.value : 'normal';
+  const tarea = crearTarea(titulo, prioridad);
   tareas.push(tarea);
   renderizarTareas();
 
@@ -167,14 +174,25 @@ tareasFiltradas.forEach(function(tarea) {
     const info = document.createElement('div');
     info.className = 'tarea-info';
 
+    const header = document.createElement('div');
+    header.className = 'tarea-header';
+
     const spanTexto = document.createElement('span');
     spanTexto.textContent = tarea.title;
+
+    const badgePrioridad = document.createElement('span');
+    const prioridad = tarea.priority || 'normal';
+    badgePrioridad.className = `badge-prioridad prioridad-${prioridad}`;
+    badgePrioridad.textContent =
+      prioridad === 'urgente' ? 'Urgente' : prioridad === 'importante' ? 'Importante' : 'Normal';
+
+    header.appendChild(spanTexto);
 
     const spanFecha = document.createElement('small');
     spanFecha.className = 'tarea-fecha';
     spanFecha.textContent = `Creada: ${tarea.createdAt}`;
 
-    info.appendChild(spanTexto);
+    info.appendChild(header);
     info.appendChild(spanFecha);
     info.style.flex = '1';
 
@@ -245,9 +263,14 @@ tareasFiltradas.forEach(function(tarea) {
       }, 300); // espera 0.3s a que termine la animación
     });
 
+    const actions = document.createElement('div');
+    actions.className = 'tarea-actions';
+    actions.appendChild(badgePrioridad);
+    actions.appendChild(botonEditar);
+    actions.appendChild(botonEliminar);
+
     li.appendChild(info);
-    li.appendChild(botonEditar);
-    li.appendChild(botonEliminar);
+    li.appendChild(actions);
     lista.appendChild(li);
   });
 
