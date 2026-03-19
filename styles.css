@@ -83,6 +83,23 @@ main {
   color: white;
 }
 
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+#contadorCaracteres {
+  font-size: 0.75rem;
+  color: #888;
+  text-align: right;
+  margin-top: 2px;
+}
+
+.dark #contadorCaracteres {
+  color: #ccc;
+}
+
 aside {
   width: 480px;
   padding: var(--espaciado);
@@ -95,7 +112,7 @@ aside {
 }
 
 aside h2 {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-bottom: 12px;
   color: white;
 }
@@ -186,6 +203,16 @@ aside p {
 #listaTareas li:hover {
   transform: translateX(4px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+form {
+  margin-bottom: 8px;
+}
+
+main h2 {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  color: rgb(0, 0, 0);
 }
 
 /* Botón añadir tarea */

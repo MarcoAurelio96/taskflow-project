@@ -12,9 +12,14 @@ const btnModoOscuro = document.getElementById('btnModoOscuro');
 const logo = document.getElementById('logo');
 const btnMarcarTodas = document.getElementById('btnMarcarTodas');
 const btnBorrarCompletadas = document.getElementById('btnBorrarCompletadas');
+const contadorCaracteres = document.getElementById('contadorCaracteres');
 
 buscador.addEventListener('input',function() {
   renderizarTareas();
+});
+
+input.addEventListener('input', function() {
+  contadorCaracteres.textContent = input.value.length + '/100';
 });
 
 /**

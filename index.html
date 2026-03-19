@@ -30,11 +30,14 @@
     
     <div class="contenedor p-4 gap-4">
         <main class="bg-gray-200 dark:bg-gray-800 rounded-xl shadow-lg p-4"> <!--Aquí va la lista de tareas con sus acciones-->
-            <h2>Lista de tareas</h2>
+            <h2>Lista de tareas:</h2>
             <div>
                 <form>
                     <label for="inputTarea">Nueva tarea</label>
-                    <input type="text" id="inputTarea" placeholder="Nueva tarea...">
+                    <div class="input-wrapper">
+                        <input type="text" id="inputTarea" placeholder="Nueva tarea..." maxlength="100">
+                        <small id="contadorCaracteres">0/100</small> 
+                    </div>
                     <button type="submit">Añadir tarea</button>
                 </form>
 
@@ -55,7 +58,7 @@
         </main>
     
         <aside class="bg-blue-400 rounded-xl shadow-lg p-4"> <!--Aquí van las estadísticas-->
-            <h2>Estadísticas</h2>
+            <h2>Estadísticas:</h2>
 
             <div class="stat">
                 <div class="stat-label">Completadas</div>
