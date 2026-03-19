@@ -168,6 +168,14 @@ function renderizarTareas(){
   return coincideTexto;
   });
 
+  const prioridadRank = { urgente: 0, importante: 1, normal: 2 };
+  tareasFiltradas.sort(function(a, b) {
+    const ra = prioridadRank[a.priority] ?? 2;
+    const rb = prioridadRank[b.priority] ?? 2;
+    if (ra !== rb) return ra - rb;
+    return (a.id ?? 0) - (b.id ?? 0);
+  });
+
 tareasFiltradas.forEach(function(tarea) {
     const li = document.createElement('li');
 
