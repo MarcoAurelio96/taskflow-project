@@ -164,9 +164,19 @@ function renderizarTareas(){
 tareasFiltradas.forEach(function(tarea) {
     const li = document.createElement('li');
 
+    const info = document.createElement('div');
+    info.className = 'tarea-info';
+
     const spanTexto = document.createElement('span');
     spanTexto.textContent = tarea.title;
-    spanTexto.style.flex = '1';
+
+    const spanFecha = document.createElement('small');
+    spanFecha.className = 'tarea-fecha';
+    spanFecha.textContent = `Creada: ${tarea.createdAt}`;
+
+    info.appendChild(spanTexto);
+    info.appendChild(spanFecha);
+    info.style.flex = '1';
 
     if (tarea.completed) {
       li.classList.add('completada');
@@ -235,7 +245,7 @@ tareasFiltradas.forEach(function(tarea) {
       }, 300); // espera 0.3s a que termine la animación
     });
 
-    li.appendChild(spanTexto);
+    li.appendChild(info);
     li.appendChild(botonEditar);
     li.appendChild(botonEliminar);
     lista.appendChild(li);
