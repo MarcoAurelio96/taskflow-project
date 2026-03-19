@@ -1,55 +1,81 @@
 # Next Task
 
-Es una aplicación para crear, completar, eliminar y filtrar tareas del día a día.
-
-## Diseño de la aplicación
-
-La interfaz está dividida en cuatro secciones principales:
-
-Cabecera: Muestra el nombre de la app. Es fija y siempre visible.
-
-Formulario: Un campo de texto para escribir nuevas tareas con un botón para añadirlas. También incluye filtros para ver todas las tareas.
-
-Lista de tareas: Muestra las tareas con un círculo para marcarlas como completadas y una papelera para eliminarlas. Las tareas completadas aparecen con texto tachado.
-
-Panel de estadísticas: Muestra el total de tareas, cuántas están completadas, cuántas pendientes y una barra de progreso visual. Se actualiza en tiempo real.
-
-### Acciones disponibles
-
-Añadir tarea - Escribe en el input y pulsa Enter o el botón
-
-Completar tarea - Haz clic en el círculo de la tarea
-
-Eliminar tarea - Pulsa la papelera junto a la tarea
-
-Filtrar tareas - Usa los chips: Todas / Pendientes / Completadas
-
-### Responsive
-
-Escritorio: Layout separado en 2 listas — lista de tareas a la izquierda, estadísticas a la derecha.
-Móvil: Layout — estadísticas arriba, lista abajo.
-
-### Persistencia
-
-Los datos se guardan en `localStorage` para que las tareas no se pierdan al cerrar el navegador.
-
-El diseño está en `docs/design/design.png`.
-
-## Testing manual
-
-La aplicación se probó manualmente con los siguientes casos:
-
-La lista vacía se muestra correctamente.
-
-No es posible añadir tareas sin título.
-
-Las estadísticas se actualizan correctamente al marcar y eliminar tareas.
-
-Los datos persisten al recargar la página.
-
-Con títulos muy largos los iconos pueden desaparecer.
+Aplicación web (HTML/CSS/JS) para gestionar tareas diarias: crear, completar, editar, eliminar, filtrar y visualizar estadísticas, con persistencia en `localStorage`.
 
 ## Demo
 
-La aplicación está desplegada en Vercel:
-https://taskflow-project-42pz.vercel.app/
+- **Live**: `https://taskflow-project-42pz.vercel.app/`
+
+## Funcionalidades
+
+- **CRUD de tareas**: crear, editar (inline), completar y eliminar (con animación).
+- **Búsqueda + filtros**:
+  - **Búsqueda** por texto.
+  - **Filtro**: Todas / Pendientes / Completadas.
+- **Prioridad**: Normal / Importante / Urgente.
+- **Orden por prioridad**: Urgente → Importante → Normal (orden estable por `id`).
+- **Fecha de creación**: cada tarea muestra `createdAt`.
+- **Estadísticas**: totales, completadas, pendientes y porcentaje con barra de progreso.
+- **Tema**: modo claro/oscuro con persistencia.
+
+## Estructura del proyecto
+
+- `index.html`: estructura UI (formulario, filtros, lista, estadísticas).
+- `styles.css`: estilos (tema claro/oscuro con variables CSS, layout y componentes).
+- `app.js`: lógica de tareas, render, persistencia, estadísticas y eventos.
+- `docs/ai/`: notas de trabajo y documentación auxiliar.
+
+## Cómo ejecutar en local
+
+No requiere build ni dependencias.
+
+- **Opción A (rápida)**: abre `index.html` en el navegador.
+- **Opción B (recomendada)**: usar un servidor local para evitar problemas de rutas/caché.
+
+Ejemplos:
+
+```bash
+# Python
+python -m http.server 5500
+```
+
+Luego abre `http://localhost:5500`.
+
+## Persistencia (localStorage)
+
+La app guarda estado en el navegador:
+
+- **Tareas**: clave `tareas` (array serializado).
+- **Tema**: clave `modoOscuro` (`'true'` / `'false'`).
+
+### Esquema de una tarea
+
+```js
+{
+  id: number,
+  title: string,
+  completed: boolean,
+  createdAt: string, // fecha en formato es-ES
+  priority: "normal" | "importante" | "urgente"
+}
+```
+
+## UX / Responsive
+
+- **Escritorio**: lista de tareas a la izquierda, estadísticas a la derecha.
+- **Móvil**: layout en columna (adaptado con media queries).
+
+## Testing manual (checklist)
+
+- [ ] Añadir tarea vacía no crea registros.
+- [ ] Editar tarea (Enter / blur) persiste y no marca como completada por error.
+- [ ] Completar/descompletar actualiza estadísticas y se guarda.
+- [ ] Eliminar aplica animación y actualiza persistencia.
+- [ ] Prioridad se guarda, se muestra y ordena correctamente.
+- [ ] Al recargar, tareas + tema se restauran.
+
+## Roadmap
+
+- Filtro por prioridad (Urgente / Importante / Normal).
+- Cancelar edición con `Escape`.
+- Usar el `<template id="plantillaTarea">` para renderizar items (menos manipulación manual).
