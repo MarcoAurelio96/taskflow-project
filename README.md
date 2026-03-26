@@ -79,3 +79,46 @@ La app guarda estado en el navegador:
 - Filtro por prioridad (Urgente / Importante / Normal).
 - Cancelar edición con `Escape`.
 - Usar el `<template id="plantillaTarea">` para renderizar items (menos manipulación manual).
+
+
+## API Test con Postman
+
+-Método: Get
+-Test: Sin tareas
+  1. Status 200
+  2. Respuesta JSON []
+
+-Método: Post
+-Test: Sin título
+  1. Status 400
+  2. Respuesta { "error": "El título es obligatorio"  }
+
+-Método: Post
+-Test: Título no válido
+  1. Status 400
+  2. Respuesta { "error": "El título no puede ser numérico"  }
+
+-Método: Post
+-Test: Título vacío
+  1. Status 400
+  2. Respuesta { "error": "El título no puede estar vacío"  }
+
+-Método: Post
+-Test: Título válido
+  1. Status 201
+  2. Respuesta { "id": 1774523820769, "title": "Test tercera fase", "completed": false, "createdAt": "2026-03-26T11:17:00.769Z" }
+
+-Método: Delete
+-Test: Eliminar una ID que no existe
+  1. Status 404
+  2. Respuesta { "error": "Recurso no encontrado"  }
+
+-Método: Delete
+-Test: Eliminar una ID no válida
+  1. Status 400
+  2. Respuesta { "El ID debe ser un número válido"  }
+
+-Método: Delete
+-Test: Eliminar una ID válida
+  1. Status 200
+  2. Respuesta 1
