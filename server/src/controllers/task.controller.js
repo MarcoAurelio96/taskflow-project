@@ -21,11 +21,18 @@ const crearTarea = (req, res, next) => {
             return res.status(400).json({ error: 'El título debe ser texto' })
         }
 
-        if (title.trim() === '') {
+        const trimmedTitle = title.trim();
+
+        if (trimmedTitle === '') {
             return res.status(400).json({ error: 'El título no puede estar vacío' })
         }
 
-        const tarea = taskService.crearTarea({ title });
+        // Evita que se creen títulos que sean solo números (ej. "123")
+        if (/^\d+$/.test(trimmedTitle)) {
+            return res.status(400).json({ error: 'El título no puede ser numérico' });
+        }
+
+        const tarea = taskService.crearTarea({ title: trimmedTitle });
         res.status(201).json(tarea);
       } catch (err) {
         next(err);

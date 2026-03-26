@@ -5,13 +5,16 @@ function obtenerTodas() {
 }
 
 function crearTarea(data) {
-    if (!data || !data.title) {
-        throw new Error ('INVALID_DATA');
-    }
+  const title = data?.title;
+  if (typeof title !== 'string') throw new Error('INVALID_TITLE');
+  const trimmedTitle = title.trim();
+  if (trimmedTitle === '') throw new Error('INVALID_TITLE_EMPTY');
+  // Evita que se creen títulos que sean solo números (ej. "123")
+  if (/^\d+$/.test(trimmedTitle)) throw new Error('INVALID_TITLE_NUMERIC');
 
   const nuevaTarea = {
     id: Date.now(),
-    title: data.title,
+    title: trimmedTitle,
     completed: false,
     createdAt: new Date()
   };
