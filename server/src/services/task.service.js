@@ -1,4 +1,4 @@
-let tasks = [];
+let tareas = [];
 
 function obtenerTodas() {
     return tareas;
@@ -6,7 +6,7 @@ function obtenerTodas() {
 
 function crearTarea(data) {
     if (!data || !data.title) {
-        throw new Error ('INVALID DATA');
+        throw new Error ('INVALID_DATA');
     }
 
   const nuevaTarea = {

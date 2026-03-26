@@ -17,11 +17,11 @@ const crearTarea = (req, res, next) => {
             return res.status(400).json({ error: 'El título es obligatorio' });
         }
 
-        if (typeof tittle !== 'String') {
+        if (typeof title !== 'string') {
             return res.status(400).json({ error: 'El título debe ser texto' })
         }
 
-        if (title.trim() === ' ') {
+        if (title.trim() === '') {
             return res.status(400).json({ error: 'El título no puede estar vacío' })
         }
 
