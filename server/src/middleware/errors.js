@@ -6,7 +6,8 @@ const errorHandler = (err, req, res, next) => {
     if (
         err.message === 'INVALID_TITLE_EMPTY' ||
         err.message === 'INVALID_TITLE_NUMERIC' ||
-        err.message === 'INVALID_TITLE'
+        err.message === 'INVALID_TITLE' ||
+        err.message === 'INVALID_COMPLETED'
     ) {
         return res.status(400).json({ error: err.message });
     }

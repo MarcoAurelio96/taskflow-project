@@ -17,10 +17,10 @@ app.use('/api/v1/tasks', taskRoutes);
 
 app.use(errorHandler);
 
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
-
-// Requerido por Vercel para ejecutar como Serverless Function
 module.exports = app;

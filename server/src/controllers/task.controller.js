@@ -54,4 +54,18 @@ const eliminarTarea = (req, res, next) => {
     }
 };
 
-module.exports = { obtenerTodas, crearTarea, eliminarTarea };
+const actualizarTarea = (req, res, next) => {
+    try {
+        const id = Number(req.params.id);
+        if (!Number.isFinite(id)) {
+            return res.status(400).json({ error: 'El ID debe ser un número válido' });
+        }
+
+        const tareaActualizada = taskService.actualizarTarea(id, req.body || {});
+        res.status(200).json(tareaActualizada);
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = { obtenerTodas, crearTarea, eliminarTarea, actualizarTarea };

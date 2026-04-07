@@ -433,6 +433,46 @@ footer {
   opacity: 0.6;
 }
 
+.estado-red {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radio-borde);
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+}
+
+.estado-red.idle {
+  display: none;
+}
+
+.estado-red.loading {
+  display: block;
+  background: rgba(73, 149, 255, 0.15);
+  border-color: rgba(73, 149, 255, 0.35);
+  color: var(--color-principal);
+}
+
+.estado-red.success {
+  display: block;
+  background: rgba(61, 153, 112, 0.15);
+  border-color: rgba(61, 153, 112, 0.35);
+  color: #126645;
+}
+
+.estado-red.error {
+  display: block;
+  background: rgba(255, 47, 47, 0.15);
+  border-color: rgba(255, 47, 47, 0.35);
+  color: #9e1010;
+}
+
+.dark .estado-red.loading,
+.dark .estado-red.success,
+.dark .estado-red.error {
+  color: #fff;
+}
+
 .dark #btnMarcarTodas, 
 .dark #btnBorrarCompletadas {
   color: white;

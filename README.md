@@ -1,124 +1,134 @@
 # Next Task
 
-Aplicación web (HTML/CSS/JS) para gestionar tareas diarias: crear, completar, editar, eliminar, filtrar y visualizar estadísticas, con persistencia en `localStorage`.
+Aplicacion web de gestion de tareas con frontend en HTML/CSS/JS y backend REST en Node.js + Express.
 
-## Demo
+## Arquitectura
 
-- **Live**: `https://taskflow-project-42pz.vercel.app/`
+### Frontend
 
-## Funcionalidades
+- `index.html`: estructura semantica de la UI.
+- `styles.css`: sistema visual y estilos responsivos.
+- `app.js`: capa de presentacion y orquestacion de estados de red.
+- `src/api/client.js`: capa de infraestructura HTTP con `fetch` para consumir `/api/v1/tasks`.
 
-- **CRUD de tareas**: crear, editar (inline), completar y eliminar (con animación).
-- **Búsqueda + filtros**:
-  - **Búsqueda** por texto.
-  - **Filtro**: Todas / Pendientes / Completadas.
-- **Prioridad**: Normal / Importante / Urgente.
-- **Orden por prioridad**: Urgente → Importante → Normal (orden estable por `id`).
-- **Fecha de creación**: cada tarea muestra `createdAt`.
-- **Estadísticas**: totales, completadas, pendientes y porcentaje con barra de progreso.
-- **Tema**: modo claro/oscuro con persistencia.
+### Backend
 
-## Estructura del proyecto
+- `server/src/index.js`: bootstrap de Express y registro de middlewares.
+- `server/src/routes/task.routes.js`: definicion de rutas REST.
+- `server/src/controllers/task.controller.js`: validacion HTTP y adaptacion request/response.
+- `server/src/services/task.service.js`: reglas de dominio y persistencia en memoria.
+- `server/src/middleware/errors.js`: middleware global de manejo de errores.
 
-- `index.html`: estructura UI (formulario, filtros, lista, estadísticas).
-- `styles.css`: estilos (tema claro/oscuro con variables CSS, layout y componentes).
-- `app.js`: lógica de tareas, render, persistencia, estadísticas y eventos.
-- `docs/ai/`: notas de trabajo y documentación auxiliar.
+## Flujo tecnico de middlewares
 
-## Cómo ejecutar en local
+1. `express.json()` parsea el payload JSON y lo deja disponible en `req.body`.
+2. `cors()` habilita intercambio cross-origin entre frontend y backend en desarrollo.
+3. Router `/api/v1/tasks` delega en handlers del controlador.
+4. `errorHandler` captura excepciones sincronas/asincronas y transforma errores de dominio en codigos HTTP (`400`, `404`, `500`).
 
-No requiere build ni dependencias.
+Este flujo sigue un pipeline de responsabilidad unica: parseo -> politicas CORS -> enrutamiento -> logica -> serializacion de error.
 
-- **Opción A (rápida)**: abre `index.html` en el navegador.
-- **Opción B (recomendada)**: usar un servidor local para evitar problemas de rutas/caché.
+## Estados de red en frontend
 
-Ejemplos:
+La UI maneja 3 estados visibles:
 
-```bash
-# Python
-python -m http.server 5500
+- `loading`: muestra mensaje mientras la peticion esta en vuelo.
+- `success`: feedback temporal cuando la operacion termina correctamente.
+- `error`: mensaje con codigo HTTP y descripcion cuando hay fallos `4xx/5xx`.
+
+La aplicacion ya no usa `localStorage` para tareas: la fuente de verdad es el backend.
+
+## API REST
+
+Base URL en local: `http://localhost:3000/api/v1/tasks`
+
+### 1) Obtener tareas
+
+```http
+GET /api/v1/tasks
 ```
 
-Luego abre `http://localhost:5500`.
+Respuesta `200`:
 
-## Persistencia (localStorage)
+```json
+[
+  {
+    "id": 1774523820769,
+    "title": "Preparar entrega",
+    "completed": false,
+    "priority": "importante",
+    "createdAt": "07/04/2026"
+  }
+]
+```
 
-La app guarda estado en el navegador:
+### 2) Crear tarea
 
-- **Tareas**: clave `tareas` (array serializado).
-- **Tema**: clave `modoOscuro` (`'true'` / `'false'`).
+```http
+POST /api/v1/tasks
+Content-Type: application/json
+```
 
-### Esquema de una tarea
+Body:
 
-```js
+```json
 {
-  id: number,
-  title: string,
-  completed: boolean,
-  createdAt: string, // fecha en formato es-ES
-  priority: "normal" | "importante" | "urgente"
+  "title": "Estudiar Node",
+  "priority": "normal",
+  "completed": false
 }
 ```
 
-## UX / Responsive
+Respuesta `201`: tarea creada.
 
-- **Escritorio**: lista de tareas a la izquierda, estadísticas a la derecha.
-- **Móvil**: layout en columna (adaptado con media queries).
+### 3) Actualizar tarea
 
-## Testing manual (checklist)
+```http
+PUT /api/v1/tasks/:id
+Content-Type: application/json
+```
 
-- [ ] Añadir tarea vacía no crea registros.
-- [ ] Editar tarea (Enter / blur) persiste y no marca como completada por error.
-- [ ] Completar/descompletar actualiza estadísticas y se guarda.
-- [ ] Eliminar aplica animación y actualiza persistencia.
-- [ ] Prioridad se guarda, se muestra y ordena correctamente.
-- [ ] Al recargar, tareas + tema se restauran.
+Body (parcial permitido):
 
-## Roadmap
+```json
+{
+  "title": "Estudiar Node + Express",
+  "completed": true
+}
+```
 
-- Filtro por prioridad (Urgente / Importante / Normal).
-- Cancelar edición con `Escape`.
-- Usar el `<template id="plantillaTarea">` para renderizar items (menos manipulación manual).
+Respuesta `200`: tarea actualizada.
 
+### 4) Eliminar tarea
 
-## API Test con Postman
+```http
+DELETE /api/v1/tasks/:id
+```
 
--Método: Get
--Test: Sin tareas
-  1. Status 200
-  2. Respuesta JSON []
+Respuesta `200` sin cuerpo.
 
--Método: Post
--Test: Sin título
-  1. Status 400
-  2. Respuesta { "error": "El título es obligatorio"  }
+## Ejecucion local
 
--Método: Post
--Test: Título no válido
-  1. Status 400
-  2. Respuesta { "error": "El título no puede ser numérico"  }
+### Backend
 
--Método: Post
--Test: Título vacío
-  1. Status 400
-  2. Respuesta { "error": "El título no puede estar vacío"  }
+```bash
+cd server
+npm install
+npm run dev
+```
 
--Método: Post
--Test: Título válido
-  1. Status 201
-  2. Respuesta { "id": 1774523820769, "title": "Test tercera fase", "completed": false, "createdAt": "2026-03-26T11:17:00.769Z" }
+### Frontend
 
--Método: Delete
--Test: Eliminar una ID que no existe
-  1. Status 404
-  2. Respuesta { "error": "Recurso no encontrado"  }
+Abrir `index.html` con Live Server o un servidor estatico.
 
--Método: Delete
--Test: Eliminar una ID no válida
-  1. Status 400
-  2. Respuesta { "El ID debe ser un número válido"  }
+## Testing manual sugerido
 
--Método: Delete
--Test: Eliminar una ID válida
-  1. Status 200
-  2. Respuesta 1
+- Crear tarea valida y comprobar respuesta `201`.
+- Enviar `title` vacio y comprobar error `400`.
+- Editar `title` y `completed` y validar respuesta `200`.
+- Eliminar un `id` inexistente y validar `404`.
+- Simular backend apagado y verificar estado visual `error` en frontend.
+
+## Documentacion complementaria
+
+- `docs/backend-api.md`: resumen de Axios, Postman, Sentry y Swagger.

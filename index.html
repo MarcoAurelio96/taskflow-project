@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next Task</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:,">
 
     <script>
         // Config para Tailwind via CDN (modo oscuro manual por clase)
@@ -50,6 +51,7 @@
 
                 <button id="btnMarcarTodas" aria-label="Marcar todas las tareas como completadas">✅ Marcar todas</button>
                 <button id="btnBorrarCompletadas" aria-label="Borrar tareas completadas">🗑️ Borrar completadas</button>
+                <div id="estadoRed" class="estado-red idle" role="status" aria-live="polite"></div>
 
                 <ul id="listaTareas">
                 </ul>
