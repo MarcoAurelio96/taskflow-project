@@ -1,8 +1,8 @@
+import { apiClient } from './src/api/client.js';
+
 let tareas = [];
 
 let filtroActivo = 'todas';
-
-const STORAGE_KEY_TAREAS = 'tareas';
 
 const form = document.querySelector('form');
 const input = document.getElementById('inputTarea');
@@ -24,66 +24,11 @@ input.addEventListener('input', function() {
 });
 
 /**
- * Carga las tareas guardadas en localStorage.
- * @returns {Array} Lista de tareas válidas.
- */
-function cargarTareas() {
-  const raw = localStorage.getItem(STORAGE_KEY_TAREAS);
-  if (!raw) return [];
-
-  try {
-    const data = JSON.parse(raw);
-    if (!Array.isArray(data)) return [];
-
-    return data
-      .map((t, idx) => {
-        if (!t || typeof t !== 'object') return null;
-        const id = Number.isFinite(Number(t.id)) ? Number(t.id) : idx + 1;
-        const title = typeof t.title === 'string' ? t.title : '';
-        const completed = Boolean(t.completed);
-        const priority =
-          t.priority === 'urgente' || t.priority === 'importante' || t.priority === 'normal'
-            ? t.priority
-            : 'normal';
-        const createdAt =
-          typeof t.createdAt === 'string'
-            ? t.createdAt
-            : typeof t.createAt === 'string'
-              ? t.createAt
-              : new Date().toLocaleDateString('es-ES');
-
-        if (!title.trim()) return null;
-        return { id, title: title.trim(), completed, createdAt, priority };
-      })
-      .filter(Boolean);
-  } catch {
-    return [];
-  }
-}
-
-/**
- * Guarda el array de tareas en localStorage.
- */
-function guardarTareas() {
-  try {
-    localStorage.setItem(STORAGE_KEY_TAREAS, JSON.stringify(tareas));
-  } catch {
-    // Si el almacenamiento está lleno o bloqueado, evitamos romper la app.
-  }
-}
-
-tareas = cargarTareas();
-
-/**
  * Activa o desactiva el modo oscuro.
  * @param {boolean} esModoOscuro - true para modo oscuro, false para modo claro.
  */
 function setModoOscuro(esModoOscuro) {
   document.documentElement.classList.toggle('dark', esModoOscuro);
-
-  try {
-    localStorage.setItem('modoOscuro', esModoOscuro ? 'true' : 'false');
-  } catch {}
 
   btnModoOscuro.textContent = esModoOscuro ? '☀️ Modo claro' : '🌙 Modo oscuro';
   logo.src = esModoOscuro ? 'docs/recursos/LOGOokB.png' : 'docs/recursos/LOGOok.png';
@@ -91,48 +36,43 @@ function setModoOscuro(esModoOscuro) {
 
 function aplicarModoOscuroDesdeStorage() {
   let esModoOscuro = false;
-  try {
-    esModoOscuro = localStorage.getItem('modoOscuro') === 'true';
-  } catch {}
   setModoOscuro(esModoOscuro);
 }
 
 aplicarModoOscuroDesdeStorage();
 
-renderizarTareas();
-/**
- * Crea un objeto tarea nuevo.
- * @param {string} titulo - El título de la tarea.
- * @returns {Object} Objeto tarea con id, title, completed y createdAt.
- */
-function crearTarea(titulo, priority) {
-  // Genera un ID único incluso si se borran tareas anteriores
-  let nuevoId = 1;
-  if (tareas.length > 0) {
-    // Buscar el máximo id ya asignado
-    nuevoId = Math.max(...tareas.map(t => t.id)) + 1;
+// Inicializar cargando tareas del servidor
+async function init() {
+  try {
+    tareas = await apiClient.getTasks();
+    renderizarTareas();
+  } catch (error) {
+    console.error('Error al inicializar la app:', error);
   }
-  return {
-    id: nuevoId,
-    title: titulo,
-    completed: false,
-    createdAt: new Date().toLocaleDateString('es-ES'), // corregido typo: createAt -> createdAt
-    priority: priority || 'normal'
-  };
 }
 
-form.addEventListener('submit', function(e){
+init();
+
+form.addEventListener('submit', async function(e){
   e.preventDefault();
 
   const titulo = input.value.trim();
   if (titulo === ('')) return;
 
   const prioridad = selectPrioridad ? selectPrioridad.value : 'normal';
-  const tarea = crearTarea(titulo, prioridad);
-  tareas.push(tarea);
-  renderizarTareas();
 
-  const liNuevo = lista.lastElementChild;
+  try {
+    const tareaNueva = {
+      title: titulo,
+      priority: prioridad,
+      completed: false,
+      createdAt: new Date().toLocaleDateString('es-ES')
+    };
+    const tareaCreada = await apiClient.createTask(tareaNueva);
+    tareas.push(tareaCreada);
+    renderizarTareas();
+
+    const liNuevo = lista.lastElementChild;
     if (liNuevo) {
       liNuevo.style.opacity = '0';
       liNuevo.style.transform = 'translateY(-10px)';
@@ -149,6 +89,10 @@ form.addEventListener('submit', function(e){
         liNuevo.style.transition = '';
       }, 350);
     }
+
+  } catch (error) {
+    console.error('Error al crear tarea:', error);
+  }
 
   input.value = '';
 });
@@ -208,16 +152,23 @@ tareasFiltradas.forEach(function(tarea) {
       li.classList.add('completada');
     }
 
-   li.addEventListener('click', function(e){
+   li.addEventListener('click', async function(e){
       if (e && e.target && e.target.tagName === 'INPUT') return;
-      tarea.completed = !tarea.completed;
-      if (tarea.completed) {
-       li.classList.add('completada');
-      } else {
-        li.classList.remove('completada');
+      
+      try {
+        const nuevoEstado = !tarea.completed;
+        await apiClient.updateTask(tarea.id, { completed: nuevoEstado });
+        tarea.completed = nuevoEstado;
+        
+        if (tarea.completed) {
+         li.classList.add('completada');
+        } else {
+          li.classList.remove('completada');
+        }
+        actualizarEstadisticas();
+      } catch (error) {
+        console.error('Error al actualizar tarea:', error);
       }
-    actualizarEstadisticas();
-    guardarTareas();
     });
 
     const botonEditar = document.createElement('button');
@@ -241,34 +192,45 @@ tareasFiltradas.forEach(function(tarea) {
         e.stopPropagation();
       });
 
+      const guardarEdicion = async () => {
+        const nuevoTitulo = inputEditar.value.trim();
+        if (nuevoTitulo !== '' && nuevoTitulo !== tarea.title) {
+          try {
+            await apiClient.updateTask(tarea.id, { title: nuevoTitulo });
+            tarea.title = nuevoTitulo;
+            renderizarTareas();
+          } catch (error) {
+            console.error('Error al editar tarea:', error);
+            renderizarTareas(); // Restaura si hay error de servidor
+          }
+        } else if (nuevoTitulo === tarea.title) {
+          renderizarTareas(); // Solo salimos del modo edición
+        }
+      };
+
       inputEditar.addEventListener('keydown', function(e) {
         e.stopPropagation();
-        if (e.key === 'Enter' && inputEditar.value.trim() !== '') {
-          tarea.title = inputEditar.value.trim();
-          renderizarTareas();
-        }
+        if (e.key === 'Enter') guardarEdicion();
       });
 
-      inputEditar.addEventListener('blur', function() {
-        if (inputEditar.value.trim() !== '') {
-          tarea.title = inputEditar.value.trim();
-          renderizarTareas();
-        }
-      });
+      inputEditar.addEventListener('blur', guardarEdicion);
     });
 
     const botonEliminar = document.createElement('button');
     botonEliminar.innerHTML = '<img src="docs/recursos/papelel.png" alt="Eliminar" width="20">';
     botonEliminar.setAttribute('aria-label', 'Eliminar tarea');
-    botonEliminar.addEventListener('click', function(e){
+    botonEliminar.addEventListener('click', async function(e){
       e.stopPropagation();
-      li.classList.add('eliminando');
-      setTimeout(function() {
-        tareas = tareas.filter(function(t){
-          return t.id !== tarea.id;
-        });
-      renderizarTareas();
-      }, 300); // espera 0.3s a que termine la animación
+      try {
+        await apiClient.deleteTask(tarea.id);
+        li.classList.add('eliminando');
+        setTimeout(function() {
+          tareas = tareas.filter(function(t){ return t.id !== tarea.id; });
+          renderizarTareas();
+        }, 300); // espera 0.3s a que termine la animación
+      } catch (error) {
+        console.error('Error al eliminar tarea:', error);
+      }
     });
 
     const actions = document.createElement('div');
@@ -283,7 +245,6 @@ tareasFiltradas.forEach(function(tarea) {
   });
 
   actualizarEstadisticas();
-  guardarTareas();
 }
 
 /**
@@ -331,12 +292,25 @@ btnModoOscuro.addEventListener('click', function() {
   setModoOscuro(esModoOscuro);
 });
 
-btnMarcarTodas.addEventListener('click', function() {
-  tareas.forEach(function(t) { t.completed = true; });
-  renderizarTareas();
+btnMarcarTodas.addEventListener('click', async function() {
+  try {
+    const pendientes = tareas.filter(t => !t.completed);
+    // Se lanzan las actualizaciones al servidor en paralelo
+    await Promise.all(pendientes.map(t => apiClient.updateTask(t.id, { completed: true })));
+    tareas.forEach(function(t) { t.completed = true; });
+    renderizarTareas();
+  } catch (error) {
+    console.error('Error al marcar todas:', error);
+  }
 });
 
-btnBorrarCompletadas.addEventListener('click', function() {
-  tareas = tareas.filter(function(t) { return !t.completed; });
-  renderizarTareas();
+btnBorrarCompletadas.addEventListener('click', async function() {
+  try {
+    const completadas = tareas.filter(t => t.completed);
+    await Promise.all(completadas.map(t => apiClient.deleteTask(t.id)));
+    tareas = tareas.filter(function(t) { return !t.completed; });
+    renderizarTareas();
+  } catch (error) {
+    console.error('Error al borrar completadas:', error);
+  }
 });

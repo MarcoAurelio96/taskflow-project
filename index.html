@@ -7,12 +7,6 @@
     <link rel="stylesheet" href="styles.css">
 
     <script>
-        // Aplica el modo oscuro lo antes posible (evita "flash" al cargar)
-        try {
-            const esModoOscuro = localStorage.getItem('modoOscuro') === 'true';
-            if (esModoOscuro) document.documentElement.classList.add('dark');
-        } catch {}
-
         // Config para Tailwind via CDN (modo oscuro manual por clase)
         window.tailwind = { config: { darkMode: 'class' } };
     </script>
@@ -31,10 +25,10 @@
         <main class="rounded-xl shadow-lg p-4"> <!--Aquí va la lista de tareas con sus acciones-->
             <h2>Lista de tareas:</h2>
             <div>
-                <form>
+                <form id="formularioTarea">
                     <label for="inputTarea">Nueva tarea</label>
                     <div class="input-wrapper">
-                        <input type="text" id="inputTarea" placeholder="Nueva tarea..." maxlength="100">
+                        <input type="text" id="inputTarea" placeholder="Nueva tarea..." maxlength="100" aria-describedby="contadorCaracteres">
                         <small id="contadorCaracteres">0/100</small> 
                     </div>
                     <label for="prioridadTarea">Prioridad</label>
@@ -88,7 +82,7 @@
                 </div>
 
                 <div class="progreso-barra">
-                    <div class="progreso-relleno" id="progresoBarra"></div>
+                    <div class="progreso-relleno" id="progresoBarra" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
 
             </div>
@@ -108,7 +102,7 @@
         </li>
     </template>
 
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 
 </body>
 </html>
