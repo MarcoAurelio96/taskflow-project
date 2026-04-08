@@ -1,4 +1,5 @@
 let tareas = [];
+const PRIORIDADES_VALIDAS = new Set(['normal', 'importante', 'urgente']);
 
 function obtenerTodas() {
     return tareas;
@@ -6,7 +7,8 @@ function obtenerTodas() {
 
 function crearTarea(data) {
   const title = data?.title;
-  const priority = data?.priority ?? 'normal';
+  const priorityRaw = data?.priority ?? data?.prioridad ?? 'normal';
+  const priority = PRIORIDADES_VALIDAS.has(priorityRaw) ? priorityRaw : 'normal';
   if (typeof title !== 'string') throw new Error('INVALID_TITLE');
   const trimmedTitle = title.trim();
   if (trimmedTitle === '') throw new Error('INVALID_TITLE_EMPTY');
@@ -58,6 +60,17 @@ function actualizarTarea(id, data) {
   if (Object.prototype.hasOwnProperty.call(data, 'completed')) {
     if (typeof data.completed !== 'boolean') throw new Error('INVALID_COMPLETED');
     payload.completed = data.completed;
+  }
+
+  const priorityCandidate = Object.prototype.hasOwnProperty.call(data, 'priority')
+    ? data.priority
+    : Object.prototype.hasOwnProperty.call(data, 'prioridad')
+      ? data.prioridad
+      : undefined;
+
+  if (priorityCandidate !== undefined) {
+    if (!PRIORIDADES_VALIDAS.has(priorityCandidate)) throw new Error('INVALID_PRIORITY');
+    payload.priority = priorityCandidate;
   }
 
   const tareaActualizada = { ...tarea, ...payload };

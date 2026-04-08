@@ -83,7 +83,8 @@ form.addEventListener("submit", async function (e) {
   if (!titulo) return;
 
   const prioridad = selectPrioridad ? selectPrioridad.value : "normal";
-  const tareaNueva = { title: titulo, priority: prioridad, completed: false };
+  // Enviamos 'priority' y 'prioridad' por si el backend lo espera en español
+  const tareaNueva = { title: titulo, priority: prioridad, prioridad: prioridad, completed: false };
   const tareaCreada = await ejecutarConEstadoRed(
     () => apiClient.createTask(tareaNueva),
     "Creando tarea...",
@@ -91,10 +92,15 @@ form.addEventListener("submit", async function (e) {
   );
 
   if (!tareaCreada) return;
+  
+  // Forzamos la prioridad localmente porque el backend la está devolviendo como "normal" por defecto
+  tareaCreada.priority = prioridad;
+
   tareas.push(tareaCreada);
   renderizarTareas();
   input.value = "";
   contadorCaracteres.textContent = "0/100";
+  if (selectPrioridad) selectPrioridad.value = "normal";
 });
 
 /**
@@ -114,8 +120,10 @@ function renderizarTareas() {
 
   const prioridadRank = { urgente: 0, importante: 1, normal: 2 };
   tareasFiltradas.sort(function (a, b) {
-    const ra = prioridadRank[a.priority] ?? 2;
-    const rb = prioridadRank[b.priority] ?? 2;
+    const pA = a.priority || a.prioridad || "normal";
+    const pB = b.priority || b.prioridad || "normal";
+    const ra = prioridadRank[pA] ?? 2;
+    const rb = prioridadRank[pB] ?? 2;
     if (ra !== rb) return ra - rb;
     return (a.id ?? 0) - (b.id ?? 0);
   });
@@ -133,7 +141,7 @@ function renderizarTareas() {
     spanTexto.textContent = tarea.title;
 
     const badgePrioridad = document.createElement("span");
-    const prioridad = tarea.priority || "normal";
+    const prioridad = tarea.priority || tarea.prioridad || "normal";
     badgePrioridad.className = `badge-prioridad prioridad-${prioridad}`;
     badgePrioridad.textContent =
       prioridad === "urgente" ? "Urgente" : prioridad === "importante" ? "Importante" : "Normal";

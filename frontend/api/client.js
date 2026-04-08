@@ -9,7 +9,8 @@ const API_BASE_URL = isLocalhost
 async function parseResponse(response, fallbackMessage) {
   if (response.ok) {
     if (response.status === 204) return null;
-    return response.json();
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
   }
 
   let message = fallbackMessage;

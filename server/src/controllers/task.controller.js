@@ -1,4 +1,5 @@
 const taskService = require('../services/task.service');
+const PRIORIDADES_VALIDAS = new Set(['normal', 'importante', 'urgente']);
 
 const obtenerTodas = (req, res, next) => {
     try {
@@ -11,7 +12,7 @@ const obtenerTodas = (req, res, next) => {
 
 const crearTarea = (req, res, next) => {
     try {
-        const { title } = req.body;
+        const { title, priority, prioridad, completed } = req.body;
 
         if (!title) {
             return res.status(400).json({ error: 'El título es obligatorio' });
@@ -32,7 +33,14 @@ const crearTarea = (req, res, next) => {
             return res.status(400).json({ error: 'El título no puede ser numérico' });
         }
 
-        const tarea = taskService.crearTarea({ title: trimmedTitle });
+        const finalPriorityRaw = priority ?? prioridad ?? 'normal';
+        const finalPriority = PRIORIDADES_VALIDAS.has(finalPriorityRaw) ? finalPriorityRaw : 'normal';
+
+        const tarea = taskService.crearTarea({ 
+            title: trimmedTitle,
+            priority: finalPriority,
+            completed: completed || false
+        });
         res.status(201).json(tarea);
       } catch (err) {
         next(err);
@@ -47,8 +55,8 @@ const eliminarTarea = (req, res, next) => {
             return res.status(400).json({ error:'El ID debe ser un número válido' });
         }
 
-        taskService.eliminarTarea(id);
-        res.status(200).send();
+        const tareaEliminada = taskService.eliminarTarea(id);
+        res.status(200).json(tareaEliminada);
     }   catch (err) {
         next (err);
     }
