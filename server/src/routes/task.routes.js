@@ -6,6 +6,7 @@ router.get('/', taskController.obtenerTodas);
 
 router.post('/', taskController.crearTarea);
 router.put('/:id', taskController.actualizarTarea);
+router.patch('/:id', taskController.actualizarTarea);
 
 router.delete('/:id', taskController.eliminarTarea);
 

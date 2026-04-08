@@ -1,14 +1,13 @@
-import { apiClient } from "./src/api/client.js";
+import { apiClient } from "./api/client.js";
 
 let tareas = [];
 let filtroActivo = "todas";
 
-const form = document.querySelector("form");
+const form = document.getElementById("formularioTarea");
 const input = document.getElementById("inputTarea");
 const lista = document.getElementById("listaTareas");
 const buscador = document.getElementById("buscador");
 const btnModoOscuro = document.getElementById("btnModoOscuro");
-const logo = document.getElementById("logo");
 const btnMarcarTodas = document.getElementById("btnMarcarTodas");
 const btnBorrarCompletadas = document.getElementById("btnBorrarCompletadas");
 const contadorCaracteres = document.getElementById("contadorCaracteres");
@@ -58,10 +57,12 @@ input.addEventListener("input", function () {
 function setModoOscuro(esModoOscuro) {
   document.documentElement.classList.toggle("dark", esModoOscuro);
   btnModoOscuro.textContent = esModoOscuro ? "☀️ Modo claro" : "🌙 Modo oscuro";
-  logo.src = esModoOscuro ? "docs/recursos/LOGOokB.png" : "docs/recursos/LOGOok.png";
+  localStorage.setItem("modoOscuro", esModoOscuro);
 }
 
-setModoOscuro(false);
+// Cargar la preferencia del usuario guardada en su navegador
+const modoOscuroGuardado = localStorage.getItem("modoOscuro") === "true";
+setModoOscuro(modoOscuroGuardado);
 
 async function init() {
   const data = await ejecutarConEstadoRed(
@@ -166,7 +167,7 @@ function renderizarTareas() {
     });
 
     const botonEditar = document.createElement("button");
-    botonEditar.innerHTML = '<img src="docs/recursos/lapiz.png" alt="Editar" width="20">';
+    botonEditar.textContent = "✏️";
     botonEditar.setAttribute("aria-label", "Editar tarea");
     botonEditar.addEventListener("click", function (e) {
       e.stopPropagation();
@@ -212,7 +213,7 @@ function renderizarTareas() {
     });
 
     const botonEliminar = document.createElement("button");
-    botonEliminar.innerHTML = '<img src="docs/recursos/papelel.png" alt="Eliminar" width="20">';
+    botonEliminar.textContent = "🗑️";
     botonEliminar.setAttribute("aria-label", "Eliminar tarea");
     botonEliminar.addEventListener("click", async function (e) {
       e.stopPropagation();

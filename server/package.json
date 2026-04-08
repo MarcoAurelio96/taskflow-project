@@ -2,7 +2,7 @@
   "name": "bootcamp-project",
   "version": "1.0.0",
   "description": "Aplicación web (HTML/CSS/JS) para gestionar tareas diarias: crear, completar, editar, eliminar, filtrar y visualizar estadísticas, con persistencia en `localStorage`.",
-  "main": "app.js",
+  "main": "src/index.js",
   "directories": {
     "doc": "docs"
   },
